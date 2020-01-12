@@ -1,0 +1,25 @@
+---
+# ------------------------------------------------------------------------
+# vars file for tmux
+# ------------------------------------------------------------------------
+
+_tmux_build_packages:
+  default:
+    - gcc
+    - make
+
+tmux_build_packages: "{{ _tmux_build_packages[ansible_os_family] | default(_tmux_build_packages['default']) }}"
+
+_tmux_packages:
+  default:
+    - fontconfig
+    - python-powerline
+    - powerline
+    - fonts-powerline
+    - python3-powerline
+
+tmux_packages: "{{ _tmux_packages[ansible_os_family] | default(_tmux_packages['default']) }}"
+
+tmux_binary: "/usr/local/bin/tmux"
+# tmux_builddir: "{{ '~' + ansible_ssh_user | expanduser }}/tmux-build"
+tmux_builddir: "/tmp/tmux-build"

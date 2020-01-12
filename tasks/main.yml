@@ -1,0 +1,71 @@
+---
+# ------------------------------------------------------------------------
+# tasks file for tmux
+# ------------------------------------------------------------------------
+
+- name: install build packages
+  package:
+    name: "{{ tmux_build_packages }}"
+    state: present
+  register: tmux_install_tmux_build
+  until: tmux_install_tmux_build is succeeded
+  retries: 3
+
+# ------------------------------------------------------------------------
+# build and configure
+# ------------------------------------------------------------------------
+
+- name: Check if tmux exists
+  stat:
+    path: "{{ tmux_binary }}"
+  register: stat_result_tmux_bin
+
+- name: create tmux if not exists
+  when: not stat_result_tmux_bin.stat.exists
+  block:
+    - name: make sure tmux builddir exists
+      file:
+        path: "{{ tmux_builddir }}"
+        state: directory
+
+    - name: Unarchive tmux tarball
+      unarchive:
+        src: "tmux-{{ tmux_version }}.tar.gz"
+        dest: "{{ tmux_builddir }}"
+        remote_src: true
+
+    - name: building tmux
+      shell: LDFLAGS="-L/usr/local/lib -Wl,-rpath=/usr/local/lib" ./configure --prefix=/usr/local && make
+      args:
+        chdir: "{{ tmux_builddir }}/tmux-{{ tmux_version }}"
+        creates: tmux.o
+
+    - name: install tmux
+      make:
+        chdir: "{{ tmux_builddir }}/tmux-{{ tmux_version }}"
+        target: install
+
+    - name: make sure tmux builddir does not exist
+      file:
+        path: "{{ tmux_builddir }}"
+        state: absent
+
+# ------------------------------------------------------------------------
+# finalizing and cleanup
+# ------------------------------------------------------------------------
+
+- name: install additional packages
+  package:
+    name: "{{ tmux_packages }}"
+    state: present
+  register: tmux_install_tmux
+  until: tmux_install_tmux is succeeded
+  retries: 3
+
+- name: uninstall build packages
+  package:
+    name: "{{ tmux_build_packages }}"
+    state: absent
+  register: tmux_install_tmux_build
+  until: tmux_install_tmux_build is succeeded
+  retries: 3

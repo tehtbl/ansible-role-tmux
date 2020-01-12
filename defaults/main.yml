@@ -1,0 +1,7 @@
+---
+# ------------------------------------------------------------------------
+# defaults file for tmux
+# ------------------------------------------------------------------------
+
+tmux_version: "2.9a"
+tmux_url: "https://github.com/tmux/tmux/releases/download/{{ tmux_version }}/tmux-{{ tmux_version }}.tar.gz"
