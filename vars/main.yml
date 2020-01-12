@@ -17,6 +17,8 @@ _tmux_packages:
     - powerline
     - fonts-powerline
     - python3-powerline
+    - libevent-dev
+    - libncurses-dev
 
 tmux_packages: "{{ _tmux_packages[ansible_os_family] | default(_tmux_packages['default']) }}"
 

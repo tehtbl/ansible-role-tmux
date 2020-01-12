@@ -1,4 +1,4 @@
 ---
 repository:
-  description: Install and configure TMUX on your system.
+  description: Install and configure tmux on your system.
   homepage: https://github.com/tehtbl/ansible-role-tmux

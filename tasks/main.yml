@@ -10,12 +10,22 @@
   register: tmux_install_tmux_build
   until: tmux_install_tmux_build is succeeded
   retries: 3
+  tags:
+    - molecule-idempotence-notest
+
+- name: install additional packages
+  package:
+    name: "{{ tmux_packages }}"
+    state: present
+  register: tmux_install_tmux
+  until: tmux_install_tmux is succeeded
+  retries: 3
 
 # ------------------------------------------------------------------------
 # build and configure
 # ------------------------------------------------------------------------
 
-- name: Check if tmux exists
+- name: check if tmux already exists
   stat:
     path: "{{ tmux_binary }}"
   register: stat_result_tmux_bin
@@ -28,11 +38,10 @@
         path: "{{ tmux_builddir }}"
         state: directory
 
-    - name: Unarchive tmux tarball
+    - name: unarchive tmux tarball
       unarchive:
         src: "tmux-{{ tmux_version }}.tar.gz"
         dest: "{{ tmux_builddir }}"
-        remote_src: true
 
     - name: building tmux
       shell: LDFLAGS="-L/usr/local/lib -Wl,-rpath=/usr/local/lib" ./configure --prefix=/usr/local && make
@@ -45,7 +54,7 @@
         chdir: "{{ tmux_builddir }}/tmux-{{ tmux_version }}"
         target: install
 
-    - name: make sure tmux builddir does not exist
+    - name: make sure tmux build dir does not exist anymore
       file:
         path: "{{ tmux_builddir }}"
         state: absent
@@ -54,14 +63,6 @@
 # finalizing and cleanup
 # ------------------------------------------------------------------------
 
-- name: install additional packages
-  package:
-    name: "{{ tmux_packages }}"
-    state: present
-  register: tmux_install_tmux
-  until: tmux_install_tmux is succeeded
-  retries: 3
-
 - name: uninstall build packages
   package:
     name: "{{ tmux_build_packages }}"
@@ -69,3 +70,5 @@
   register: tmux_install_tmux_build
   until: tmux_install_tmux_build is succeeded
   retries: 3
+  tags:
+    - molecule-idempotence-notest

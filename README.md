@@ -4,7 +4,7 @@
 Role Description
 ================
 
-Install and configure TMUX on your system.
+Install and configure tmux on your system.
 
 Example Playbook
 ================
@@ -63,7 +63,6 @@ The following roles can be installed to ensure all requirements are met, using `
 
 ```yaml
 - tehtbl.bootstrap
-- tehtbl.common
 
 ```
 

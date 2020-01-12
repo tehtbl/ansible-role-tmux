@@ -2,7 +2,7 @@
 galaxy_info:
   author: https://github.com/tehtbl
   role_name: tmux
-  description: Install and configure TMUX on your system.
+  description: Install and configure tmux on your system.
   license: MIT License
   company: None
   min_ansible_version: 2.8
@@ -28,4 +28,3 @@ galaxy_info:
 
 dependencies:
   - tehtbl.bootstrap
-  - tehtbl.common
