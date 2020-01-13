@@ -12,9 +12,8 @@ tmux_build_packages: "{{ _tmux_build_packages[ansible_os_family] | default(_tmux
 
 _tmux_packages:
   default:
-    - fontconfig
-    - python-powerline
     - powerline
+    - fontconfig
     - fonts-powerline
     - python3-powerline
     - libevent-dev
