@@ -27,5 +27,4 @@ galaxy_info:
     - ubuntu
     - linux
 
-dependencies:
-  - tehtbl.bootstrap
+dependencies: []

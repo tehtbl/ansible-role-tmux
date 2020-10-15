@@ -2,7 +2,6 @@
 gid: 45813
 name: tmux
 desc: Install and configure tmux on your system.
-deps:
-  - tehtbl.bootstrap
+deps: []
 tags:
   - tmux
